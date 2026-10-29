@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - Leela's Sweets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #A42D2F 0%, #8B2426 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #A42D2F;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: #A42D2F;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #F4E4A6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #A42D2F;
+            box-shadow: 0 0 0 3px rgba(164, 45, 47, 0.1);
+        }
+
+        .button {
+            width: 100%;
+            background: #A42D2F;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background: #8B2426;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(164, 45, 47, 0.3);
+        }
+
+        .qr-output {
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .qr-output.show {
+            display: block;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border: 3px solid #F4E4A6;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .download-btn {
+            background: #D4A24F;
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #b88a3a;
+        }
+
+        .instructions {
+            background: #FFF8E7;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #D4A24F;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            color: #A42D2F;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions ul {
+            margin-left: 1.5rem;
+            color: #666;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .example {
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #A42D2F;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧁 Leela's QR Code Generator</h1>
+        <p class="subtitle">Generate a QR code for your website</p>
+
+        <div class="input-group">
+            <label for="websiteUrl">Your Website URL</label>
+            <input 
+                type="url" 
+                id="websiteUrl" 
+                placeholder="https://username.github.io/leelas-sweets/" 
+                required
+            >
+        </div>
+
+        <button class="button" onclick="generateQR()">Generate QR Code</button>
+
+        <div class="qr-output" id="qrOutput">
+            <h3 style="color: #A42D2F; margin-bottom: 1rem;">Your QR Code</h3>
+            <div id="qrcode"></div>
+            <button class="download-btn" onclick="downloadQR()">Download QR Code</button>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instructions</h3>
+            <ul>
+                <li>Upload your website to GitHub Pages first</li>
+                <li>Copy your full website URL</li>
+                <li>Paste it in the box above</li>
+                <li>Click "Generate QR Code"</li>
+                <li>Download and use on visiting cards, packaging, etc.</li>
+            </ul>
+            <div class="example">
+                Example: https://yourusername.github.io/leelas-sweets/
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        let qrCodeInstance = null;
+
+        function generateQR() {
+            const url = document.getElementById('websiteUrl').value.trim();
+            
+            if (!url) {
+                alert('Please enter your website URL');
+                return;
+            }
+
+            // Validate URL
+            try {
+                new URL(url);
+            } catch (e) {
+                alert('Please enter a valid URL (including https://)');
+                return;
+            }
+
+            // Clear previous QR code
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+
+            // Generate new QR code
+            qrCodeInstance = new QRCode(qrContainer, {
+                text: url,
+                width: 256,
+                height: 256,
+                colorDark: "#A42D2F",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Show output
+            document.getElementById('qrOutput').classList.add('show');
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                alert('Please generate a QR code first');
+                return;
+            }
+
+            // Create download link
+            const link = document.createElement('a');
+            link.download = 'leelas-sweets-qr-code.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

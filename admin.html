@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Leela's Sweets</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <h1 class="brand-name">Leela's</h1>
+            <h2>Admin Login</h2>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter admin password">
+                </div>
+                <button type="submit" class="submit-button">Login</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+            <p class="login-note">Default password: <code>leela123</code></p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <header class="admin-header">
+            <div class="container">
+                <div class="admin-header-content">
+                    <h1 class="brand-name">Leela's Admin Panel</h1>
+                    <div class="admin-actions">
+                        <a href="index.html" class="nav-button" target="_blank">View Website</a>
+                        <button id="logoutBtn" class="logout-button">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <div class="container">
+                <div class="admin-grid">
+                    <!-- Add/Edit Product Form -->
+                    <div class="admin-section">
+                        <h2 id="formTitle">Add New Product</h2>
+                        <form id="productForm" class="product-form">
+                            <input type="hidden" id="editingId" value="">
+                            
+                            <div class="form-group">
+                                <label for="productName">Product Name *</label>
+                                <input type="text" id="productName" required placeholder="e.g., Mohanthal">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productPrice">Price (₹) *</label>
+                                <input type="number" id="productPrice" required placeholder="e.g., 250" min="0" step="0.01">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productUnit">Unit *</label>
+                                <select id="productUnit" required>
+                                    <option value="per kg">per kg</option>
+                                    <option value="per 250g">per 250g</option>
+                                    <option value="per 500g">per 500g</option>
+                                    <option value="per piece">per piece</option>
+                                    <option value="per box">per box</option>
+                                    <option value="per dozen">per dozen</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productDescription">Description *</label>
+                                <textarea id="productDescription" required rows="3" placeholder="Brief description of the sweet..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productIngredients">Ingredients *</label>
+                                <textarea id="productIngredients" required rows="3" placeholder="List main ingredients (comma separated)&#10;e.g., Besan (Chickpea flour), Pure Cow Ghee, Sugar, Cardamom"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productImage">Product Image URL</label>
+                                <input type="url" id="productImage" placeholder="https://example.com/image.jpg (optional)">
+                                <small>Tip: Upload image to a free service like imgur.com and paste the URL</small>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="productSugarFree">
+                                    <span>Sugar Free</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="productSpecial">
+                                    <span>Special/Seasonal Item</span>
+                                </label>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="submit-button" id="submitBtn">Add Product</button>
+                                <button type="button" class="cancel-button" id="cancelBtn" style="display: none;">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Products List -->
+                    <div class="admin-section">
+                        <div class="section-header">
+                            <h2>Manage Products</h2>
+                            <div class="product-count">
+                                Total: <span id="productCount">0</span> products
+                            </div>
+                        </div>
+                        
+                        <div id="productsList" class="products-list">
+                            <!-- Products will be listed here -->
+                        </div>
+
+                        <div id="emptyProducts" class="empty-state" style="display: none;">
+                            <p>No products added yet. Add your first product using the form!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
