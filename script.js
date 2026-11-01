@@ -137,47 +137,6 @@ function displayProducts() {
     `).join('');
 }
 
-// Handle contact form submission
-function handleContactForm() {
-    const form = document.getElementById('contactForm');
-    const formMessage = document.getElementById('formMessage');
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Get form data
-        const formData = {
-            name: document.getElementById('name').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            products: document.getElementById('products').value,
-            message: document.getElementById('message').value,
-            timestamp: new Date().toISOString()
-        };
-
-        // Store inquiry in localStorage
-        let inquiries = localStorage.getItem('leelasInquiries');
-        inquiries = inquiries ? JSON.parse(inquiries) : [];
-        inquiries.push(formData);
-        localStorage.setItem('leelasInquiries', JSON.stringify(inquiries));
-
-        // Show success message
-        formMessage.textContent = 'Thank you for your inquiry! We will contact you soon.';
-        formMessage.className = 'form-message success';
-
-        // Reset form
-        form.reset();
-
-        // Hide message after 5 seconds
-        setTimeout(() => {
-            formMessage.style.display = 'none';
-        }, 5000);
-
-        // Optional: Send to email (requires backend)
-        console.log('New inquiry:', formData);
-    });
-}
-
 // Smooth scrolling for navigation links
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -197,6 +156,5 @@ function initSmoothScroll() {
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     displayProducts();
-    handleContactForm();
     initSmoothScroll();
 });
