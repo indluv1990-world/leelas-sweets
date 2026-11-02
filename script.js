@@ -237,6 +237,17 @@ function getDefaultProducts() {
             image: '',
             sugarFree: true,
             special: false
+        },
+         {
+            id: '22',
+            name: 'Mix Daal Godpapdi / Suhkadi',
+            price: 900,
+            unit: 'per kg',
+            description: 'Mix Dal Gol Papdi (also widely known as Mix Dal Sukhdi) is a protein-packed, highly nutritious twist on the traditional Gujarati sweet. By combining multiple nutrient-rich lentils with whole wheat flour, ghee, and jaggery, it transforms a classic dessert into a wholesome, energy-boosting snack perfect for kids and winters.',
+            ingredients: 'Mix Dal Flour: (an equal mix of roasted chana dal, moong dal, urad dal and masoor dal flours), Pure Cow Ghee, Jaggery, Edible Gum (Dink/Gondh), Almond',
+            image: '',
+            sugarFree: false,
+            special: false
         }
     ];
 }
